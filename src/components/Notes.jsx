@@ -28,13 +28,11 @@ function Notes() {
     }))
   }
 
-  // Step 5: Submit handler to add a new note
   const handleAddNote = (e) => {
     e.preventDefault()
     const trimmedTitle = form.title.trim()
     const trimmedBody = form.body.trim()
 
-    // Do nothing if title or body is empty or only whitespace
     if (!trimmedTitle || !trimmedBody) return
 
     const newNote = {
@@ -45,6 +43,11 @@ function Notes() {
 
     setNotes((prevNotes) => [...prevNotes, newNote])
     setForm({ title: '', body: '' })
+  }
+
+  // Step 6: Function to delete a note by id
+  const handleDeleteNote = (idToDelete) => {
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== idToDelete))
   }
 
   return (
@@ -103,6 +106,7 @@ function Notes() {
               <NoteCard title={note.title} body={note.body} />
               <button
                 type="button"
+                onClick={() => handleDeleteNote(note.id)}
                 className="absolute top-4 right-5 cursor-pointer text-[26px] leading-none text-[#949494] hover:text-[#c18585]"
               >
                 ×
