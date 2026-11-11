@@ -2,7 +2,7 @@ import { useState } from 'react'
 import NoteCard from './NoteCard.jsx'
 
 function Notes() {
-  const [notes] = useState([
+  const [notes, setNotes] = useState([
     {
       id: 1,
       title: 'Review map and filter',
@@ -15,19 +15,36 @@ function Notes() {
     },
   ])
 
-  // Step 4: Form state holding both title and body
   const [form, setForm] = useState({
     title: '',
     body: '',
   })
 
-  // Single handler to update state based on input name
   const handleFormChange = (e) => {
     const { name, value } = e.target
     setForm((prev) => ({
       ...prev,
       [name]: value,
     }))
+  }
+
+  // Step 5: Submit handler to add a new note
+  const handleAddNote = (e) => {
+    e.preventDefault()
+    const trimmedTitle = form.title.trim()
+    const trimmedBody = form.body.trim()
+
+    // Do nothing if title or body is empty or only whitespace
+    if (!trimmedTitle || !trimmedBody) return
+
+    const newNote = {
+      id: Date.now(),
+      title: trimmedTitle,
+      body: trimmedBody,
+    }
+
+    setNotes((prevNotes) => [...prevNotes, newNote])
+    setForm({ title: '', body: '' })
   }
 
   return (
@@ -47,7 +64,7 @@ function Notes() {
           />
         </div>
 
-        <form className="grid gap-3">
+        <form onSubmit={handleAddNote} className="grid gap-3">
           <p className="text-[13px] font-normal tracking-wide text-[#949494]">
             NEW NOTE
           </p>
